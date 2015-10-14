@@ -97,23 +97,23 @@ if(!fs.existsSync('./config/config.yml')) {
                                     str : global[variable]) : settings.coin[variable]) : values[variable];
         });
     }
-    client.stream('statuses/filter', {track: 'skeinbot'}, function (stream) {
+    client.stream('statuses/filter', {track: 'groestltip'}, function (stream) {
      
         stream.on('data', function (tweet) {
             console.log('@'+ tweet.user.screen_name + '|' + tweet.text);
-            //var match = tweet.text.match(/(skeinbot)(\s)([a-zA-Z]+)(\s)(.+)(\s)([0-9]+)/);
-            var match = tweet.text.match(/(skeinbot)(\s)([a-zA-Z]+)/);
+            //var match = tweet.text.match(/(groestltip)(\s)([a-zA-Z]+)(\s)(.+)(\s)([0-9]+)/);
+            var match = tweet.text.match(/(groestltip)(\s)([a-zA-Z]+)/);
             if (match == null)
                 return;
             var command = match[3];
-            var from = tweet.user.sreen_name; 
+            var from = tweet.user.screen_name; 
             var msg = tweet.txt;
             var message = tweet.text;
             var replyid = tweet.id_str;
     // check if the sending user is logged in (identified) with nickserv
             switch (command) {
                 case 'tip':
-                    var match = tweet.text.match(/(skeinbot)(\s)([a-zA-Z]+)(\s)(\@)(.+)(\s)([0-9]+)/);
+                    var match = tweet.text.match(/(groestltip)(\s)([a-zA-Z]+)(\s)(\@)(.+)(\s)([0-9]+)/);
                     console.log('tip');
                     console.log(match[0] + ',' + match[1] + ',' + match[2] + ',' + match[3] + ',' + match[4] + ',' + match[5] + ',' + match[6] + ',' + match[7] + ',' + match[8]);
                     if (match == null || match.length < 3) {
