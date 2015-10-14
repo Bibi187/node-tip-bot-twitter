@@ -11,8 +11,8 @@ connection:
   secure: true
   debug: false
 login: 
-  nickname: twitterbot
-  username: twitterbot
+  nickname: groestltip
+  username: groestltip
   realname: node.js groestlcoin tipping bot
   nickserv_password: pass
 channels: 
@@ -22,17 +22,17 @@ log:
 rpc:
   host: localhost
   port: 1441
-  user: dogecoinrpc
+  user: groestlcoinrpc
   pass: pass
   prefix: ''
 coin:
-  withdrawal_fee: 1
-  min_withdraw: 5
-  min_confirmations: 5
-  min_tip: 10
+  withdrawal_fee: 0.02
+  min_withdraw: 1
+  min_confirmations: 6
+  min_tip: 1
   min_rain: 1
   short_name: ' GRS'
-  full_name: groestlcoin 
+  full_name: Groestlcoin 
 webadmin:
   enabled: false
   port: 8080
