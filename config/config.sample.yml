@@ -4,16 +4,16 @@ twitter:
     access_token_key: ''
     access_token_secret: ''
     twittername: ''
-    twitterkeyword: 'skeinbot'
+    twitterkeyword: 'groestltip'
 connection: 
   host: irc.freenode.net
   port: 6697
   secure: true
   debug: false
 login: 
-  nickname: nodetip
-  username: nodetip
-  realname: node.js dogecoin tipping bot
+  nickname: twitterbot
+  username: twitterbot
+  realname: node.js groestlcoin tipping bot
   nickserv_password: pass
 channels: 
   - '##tipbots'
@@ -21,7 +21,7 @@ log:
   file: tipbot.log
 rpc:
   host: localhost
-  port: 22555
+  port: 1441
   user: dogecoinrpc
   pass: pass
   prefix: ''
@@ -31,8 +31,8 @@ coin:
   min_confirmations: 5
   min_tip: 10
   min_rain: 1
-  short_name: ' DOGE'
-  full_name: dogecoin 
+  short_name: ' GRS'
+  full_name: groestlcoin 
 webadmin:
   enabled: false
   port: 8080
