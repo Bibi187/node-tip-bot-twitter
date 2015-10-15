@@ -110,6 +110,13 @@ if(!fs.existsSync('./config/config.yml')) {
             var msg = tweet.txt;
             var message = tweet.text;
             var replyid = tweet.id_str;
+            if(command == 'help' || command == 'terms') {
+            var msg = [];
+            for(var i = 0; i < settings.messages[command].length; i++) {
+            replytweet(from, replyid, settings.messages[command][i].expand({}));
+            }
+            return;
+            }
     // check if the sending user is logged in (identified) with nickserv
             switch (command) {
                 case 'tip':
