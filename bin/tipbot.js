@@ -117,7 +117,7 @@ if(!fs.existsSync('./config/config.yml')) {
                     console.log('tip');
                     console.log(match[0] + ',' + match[1] + ',' + match[2] + ',' + match[3] + ',' + match[4] + ',' + match[5] + ',' + match[6] + ',' + match[7] + ',' + match[8]);
                     if (match == null || match.length < 3) {
-                        replytweet(from, replyid, 'Usage: nameofbot tip <twitterhandle> <amount>')
+                        replytweet(from, replyid, 'Usage: groestltip tip <twitterhandle> <amount>')
                         return;
                     }
                     //if (match[4] !== '@'){ return;}
