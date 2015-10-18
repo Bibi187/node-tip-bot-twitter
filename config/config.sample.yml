@@ -5,18 +5,6 @@ twitter:
     access_token_secret: ''
     twittername: ''
     twitterkeyword: 'groestltip'
-connection: 
-  host: irc.freenode.net
-  port: 6697
-  secure: true
-  debug: false
-login: 
-  nickname: groestltip
-  username: groestltip
-  realname: node.js groestlcoin tipping bot
-  nickserv_password: pass
-channels: 
-  - '##tipbots'
 log:
   file: tipbot.log
 rpc:
@@ -73,10 +61,8 @@ messages:
   withdraw_too_small: 'Sorry %name%, you need to withdraw at least %min_withdraw%%short_name% (you have %balance%%short_name%)'
   invalid_address: 'Sorry %name%, the address you specified is invalid (%address%).'
   tip_too_small: 'Sorry %from%, your tip to %to% (%amount%%short_name%) is too small (min. %min_tip%%short_name%).'
-  rain_too_small: 'Sorry %from%, your rain (%amount%%short_name%) is too small (min. %min_rain%%short_name%). Increase the value or decrease max wet users.'
   tip_self: "Sorry %name%, you can't tip yourself!"
   invalid_amount: 'Sorry %name%, "%amount%" is not a correct amount.'
-  rain: '%name% rained %amount%%short_name% upon %list%.'
   withdraw_success: 
     - '%name%: %amount%%short_name% has been withdrawn from your account to %address%'
     - 'You have been charged %withdrawal_fee%%short_name% withdrawal fee.'
@@ -84,10 +70,11 @@ messages:
   help:
     - 'You can use following commands:'
     - 'groestltip balance - Your %full_name% wallet balance'
-    - 'groestltip address - Your %full_name% deposit address to'
-    - 'groestltip withdraw <%full_name% address here > - withdraw balance to a GRS address'
-    - 'groestltip tip <twitter handle> <amount> - send a specified amount of %full_name% to a specified Twitteruser'
+    - 'groestltip address - Your %full_name% deposit address'
+    - 'groestltip withdraw <%full_name% address here> - withdraw balance to a GRS address'
+    - 'groestltip tip <twitter handle> <amount> - send a specified amount of %full_name% to a Twitteruser'
     - 'groestltip terms - displays terms and conditions for using GroestlTip'
   terms:
     - 'There are no fees to use GroestlTip, with the exception of %withdrawal_fee%%short_name% fee on withdrawals.'
     - 'In no event shall GroestlTip be responsible in the event of lost, stolen or misdirected funds.'
+    
