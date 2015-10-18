@@ -1,8 +1,8 @@
-	
     var winston = require('winston'),
             fs = require('fs'),
             yaml = require('js-yaml'),
             coin = require('node-dogecoin');
+    
     var Twitter = require('twitter');
     // check if the config file exists
 if(!fs.existsSync('./config/config.yml')) {
@@ -47,7 +47,14 @@ if(!fs.existsSync('./config/config.yml')) {
         access_token_key: settings.twitter.access_token_key,
         access_token_secret: settings.twitter.access_token_secret
     });
-     
+     //
+     client.get('followers/ids', function(error, tweets, response){
+  if(error) {console.log(error);}
+  winston.info('Connected to Twitter. Followers:' +tweets.ids.length);
+
+});
+
+
     // basic handlers
     var locks = [];
      
@@ -63,7 +70,7 @@ if(!fs.existsSync('./config/config.yml')) {
      
     function replytweet(to, replyid, themessage) {
         winston.info('Preparing tweet' + '@' + to + ' :' + themessage);
-        var newtweet = '@' + to + ' ' + themessage + '(' + makeid() + ')';
+        var newtweet = '@' + to + ' ' + themessage + '  (' + makeid() + ')';
         winston.info('' + '@' + to + ' :' + newtweet);
         client.post('statuses/update', {status: newtweet, in_reply_to_status_id: replyid}, function (error, params, response) {
             if (error) {
@@ -86,9 +93,9 @@ if(!fs.existsSync('./config/config.yml')) {
             callback(false, address);
         });
     }
-    String.prototype.expand = function (values) {
+        String.prototype.expand = function (values) {
         var global = {
-            nick: 'client.nick'
+            nick: settings.twitter.twittername
         }
         return this.replace(/%([a-zA-Z_]+)%/g, function (str, variable) {
             return typeof (values[variable]) == 'undefined' ?
@@ -97,12 +104,17 @@ if(!fs.existsSync('./config/config.yml')) {
                                     str : global[variable]) : settings.coin[variable]) : values[variable];
         });
     }
-    client.stream('statuses/filter', {track: 'groestltip'}, function (stream) {
-     
+    client.stream('statuses/filter', {track: settings.twitter.twitterkeyword}, function (stream) {
+          stream.on('error', function(error) {
+            winston.error('Something went wrong with the twitter streaming api. ');
+           });
+  stream.on('end', function(reason) {
+                    winston.error('Twitter streaming api throws end');
+  });
         stream.on('data', function (tweet) {
             console.log('@'+ tweet.user.screen_name + '|' + tweet.text);
-            //var match = tweet.text.match(/(groestltip)(\s)([a-zA-Z]+)(\s)(.+)(\s)([0-9]+)/);
-            var match = tweet.text.match(/(groestltip)(\s)([a-zA-Z]+)/);
+            var regex= new RegExp("(" + settings.twitter.twitterkeyword + ")(\\s)([a-zA-Z]+)", "i");
+            var match = tweet.text.match(regex);
             if (match == null)
                 return;
             var command = match[3];
@@ -110,27 +122,26 @@ if(!fs.existsSync('./config/config.yml')) {
             var msg = tweet.txt;
             var message = tweet.text;
             var replyid = tweet.id_str;
+    
             if(command == 'help' || command == 'terms') {
-            var msg = [];
-            for(var i = 0; i < settings.messages[command].length; i++) {
-            replytweet(from, replyid, settings.messages[command][i].expand({}));
-            }
+                for(var i = 0; i < settings.messages[command].length; i++) {
+                    replytweet(from, replyid, settings.messages[command][i].expand({}));
+                }
             return;
             }
-    // check if the sending user is logged in (identified) with nickserv
+
             switch (command) {
                 case 'tip':
-                    var match = tweet.text.match(/(groestltip)(\s)([a-zA-Z]+)(\s)(\@)(.+)(\s)([0-9]+)/);
+                var regex = new RegExp("(" + settings.twitter.twitterkeyword + ")(\\s)([a-zA-Z]+)(\\s)(\\@)(.+)(\\s)([0-9]+)", "i");
+                    var match = tweet.text.match(regex);
                     console.log('tip');
                     console.log(match[0] + ',' + match[1] + ',' + match[2] + ',' + match[3] + ',' + match[4] + ',' + match[5] + ',' + match[6] + ',' + match[7] + ',' + match[8]);
                     if (match == null || match.length < 3) {
                         replytweet(from, replyid, 'Usage: groestltip tip <twitterhandle> <amount>')
                         return;
                     }
-                    //if (match[4] !== '@'){ return;}
                     var to = match[6];
                     var amount = Number(match[8]);
-     
                     console.log('To:' + amount);
                     // lock
                     if (locks.hasOwnProperty(from.toLowerCase()) && locks[from.toLowerCase()])
@@ -157,7 +168,7 @@ if(!fs.existsSync('./config/config.yml')) {
                     coin.getBalance(settings.rpc.prefix + from.toLowerCase(), settings.coin.min_confirmations, function (err, balance) {
                         if (err) {
                             locks[from.toLowerCase()] = null;
-                            winston.error('Error in tip command.', err);
+                            winston.error('Error in !tip command.', err);
      
                             replytweet(from, replyid, settings.messages.error.expand({name: from}));
                             return;
@@ -167,7 +178,7 @@ if(!fs.existsSync('./config/config.yml')) {
                             coin.send('move', settings.rpc.prefix + from.toLowerCase(), settings.rpc.prefix + to.toLowerCase(), amount, function (err, reply) {
                                 locks[from.toLowerCase()] = null;
                                 if (err || !reply) {
-                                    winston.error('Error in tip command', err);
+                                    winston.error('Error in !tip command', err);
                                     replytweet(from, replyid, settings.messages.error.expand({name: from}));
                                     return;
                                 }
@@ -186,7 +197,7 @@ if(!fs.existsSync('./config/config.yml')) {
                     var user = from.toLowerCase();
                     getAddress(user, function (err, address) {
                         if (err) {
-                            winston.error('Error in address command', err);
+                            winston.error('Error in !address command', err);
                             replytweet(from, replyid, settings.messages.error.expand({name: from}));
                             return;
                         }
@@ -198,14 +209,14 @@ if(!fs.existsSync('./config/config.yml')) {
                     var user = from.toLowerCase();
                     coin.getBalance(settings.rpc.prefix + user, settings.coin.min_confirmations, function (err, balance) {
                         if (err) {
-                            winston.error('Error in balance command', err);
+                            winston.error('Error in !balance command', err);
                             replytweet(from, replyid, settings.messages.error.expand({name: from}));
                             return;
                         }
                         var balance = typeof (balance) == 'object' ? balance.result : balance;
                         coin.getBalance(settings.rpc.prefix + user, 0, function (err, unconfirmed_balance) {
                             if (err) {
-                                winston.error('Error in balance command', err);
+                                winston.error('Error in !balance command', err);
                                 replytweet(from, replyid, settings.messages.balance.expand({balance: balance, name: user}));
                                 return;
                             }
@@ -216,22 +227,23 @@ if(!fs.existsSync('./config/config.yml')) {
                     break;
                 case 'withdraw':
                     console.log('withdrawl');
+                    var user = from.toLowerCase();
                     var match = message.match(/.?withdraw (\S+)$/);
                     if (match == null) {
-                        replytweet(from, replyid, 'Usage: groestltip withdraw <' + settings.coin.full_name + ' address>');
+                        replytweet(from, replyid, 'Usage: !withdraw <' + settings.coin.full_name + ' address>');
                         return;
                     }
                     var address = match[1];
                     coin.validateAddress(address, function (err, reply) {
                         if (err) {
-                            winston.error('Error in withdraw command', err);
+                            winston.error('Error in !withdraw command', err);
                             replytweet(from, replyid, settings.messages.error.expand({name: from}));
                             return;
                         }
                         if (reply.isvalid) {
                             coin.getBalance(settings.rpc.prefix + from.toLowerCase(), settings.coin.min_confirmations, function (err, balance) {
                                 if (err) {
-                                    winston.error('Error in withdraw command', err);
+                                    winston.error('Error in !withdraw command', err);
                                     replytweet(from, replyid, settings.messages.error.expand({name: from}));
                                     return;
                                 }
@@ -243,7 +255,7 @@ if(!fs.existsSync('./config/config.yml')) {
                                 }
                                 coin.sendFrom(settings.rpc.prefix + from.toLowerCase(), address, balance - settings.coin.withdrawal_fee, function (err, reply) {
                                     if (err) {
-                                        winston.error('Error in withdraw command', err);
+                                        winston.error('Error in !withdraw command', err);
                                         replytweet(from, replyid, settings.messages.error.expand({name: from}));
                                         return;
                                     }
@@ -261,7 +273,7 @@ if(!fs.existsSync('./config/config.yml')) {
                                         }
                                         var balance = typeof (balance) == 'object' ? balance.result : balance;
     // moves the rest to bot's wallet
-                                        coin.move(settings.rpc.prefix + from.toLowerCase(), settings.rpc.prefix + settings.login.nickname.toLowerCase(), balance);
+    					coin.move(settings.rpc.prefix + from.toLowerCase(), settings.rpc.prefix + settings.twitter.twittername.toLowerCase(), balance);
                                     });
                                 });
                             });
@@ -277,4 +289,3 @@ if(!fs.existsSync('./config/config.yml')) {
             }
         });
     });
-
