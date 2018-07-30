@@ -114,7 +114,7 @@ if(!fs.existsSync('./config/config.yml')) {
         stream.on('data', function (tweet) {
             console.log('@'+ tweet.user.screen_name + '|' + tweet.text);
             if ((tweet.text).substring(0,2) == "RT"){
-                    console.log("Retweet Ingrored");
+                    console.log("Retweet Ignored");
                     return;
                 }
             var regex= new RegExp("(" + settings.twitter.twitterkeyword + ")(\\s)([a-zA-Z]+)", "i");
@@ -141,7 +141,7 @@ if(!fs.existsSync('./config/config.yml')) {
                     console.log('tip');
                     console.log(match[0] + ',' + match[1] + ',' + match[2] + ',' + match[3] + ',' + match[4] + ',' + match[5] + ',' + match[6] + ',' + match[7] + ',' + match[8]);
                     if (match == null || match.length < 3) {
-                        replytweet(from, replyid, 'Usage: groestltip tip <twitterhandle> <amount>')
+                        replytweet(from, replyid, 'Usage: oniontip tip <twitterhandle> <amount>')
                         return;
                     }
                     var to = match[6];
