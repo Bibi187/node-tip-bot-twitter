@@ -4,23 +4,22 @@ twitter:
     access_token_key: ''
     access_token_secret: ''
     twittername: ''
-    twitterkeyword: 'groestltip'
+    twitterkeyword: 'oniontip'
 log:
   file: tipbot.log
 rpc:
   host: localhost
-  port: 1441
-  user: groestlcoinrpc
+  port: 18580
+  user: DeepOnion
   pass: pass
   prefix: ''
 coin:
-  withdrawal_fee: 0.02
+  withdrawal_fee: 0.001
   min_withdraw: 1
   min_confirmations: 6
-  min_tip: 1
-  min_rain: 1
-  short_name: ' GRS'
-  full_name: Groestlcoin 
+  min_tip: 0.01
+  short_name: ONION
+  full_name: DeepOnion 
 webadmin:
   enabled: false
   port: 8080
@@ -69,11 +68,11 @@ messages:
     - 'Transaction %transaction% completed.'
   help:
     - 'You can use following commands:'
-    - 'groestltip balance - Your %full_name% wallet balance'
-    - 'groestltip address - Your %full_name% deposit address'
-    - 'groestltip withdraw <%full_name% address here> - withdraw balance to a GRS address'
-    - 'groestltip tip <twitter handle> <amount> - send a specified amount of %full_name% to a Twitteruser'
-    - 'groestltip terms - displays terms and conditions for using GroestlTip'
+    - 'oniontip balance - Your %full_name% wallet balance'
+    - 'oniontip address - Your %full_name% deposit address'
+    - 'oniontip withdraw <%full_name% address here> - withdraw balance to a GRS address'
+    - 'oniontip tip <twitter handle> <amount> - send a specified amount of %full_name% to a Twitteruser'
+    - 'oniontip terms - displays terms and conditions for using DeepOnionTipBot'
   terms:
     - 'There are no fees to use GroestlTip, with the exception of %withdrawal_fee%%short_name% fee on withdrawals.'
     - 'In no event shall GroestlTip be responsible in the event of lost, stolen or misdirected funds.'
