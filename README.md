@@ -1,9 +1,9 @@
-node-tip-bot-twitter is an open-source node.js twitter bot for Groestlcoin. 
+node-tip-bot-twitter is an open-source node.js twitter bot for DeepOnion. 
 
 # Installation
 To install node-tip-bot simply clone this repo and install dependencies:
 ```bash
-git clone https://github.com/Groestlcoin/node-tip-bot-twitter
+git clone https://github.com/Bibi187/node-tip-bot-twitter
 cd node-tip-bot-twitter
 npm install
 ```
@@ -26,7 +26,7 @@ Logging settings.
 ## rpc
 JSON RPC API connection info.
 * **host** - JSON RPC API hostname
-* **port** - API port (by default 1441 for groestlcoin)
+* **port** - API port (by default 18580 for DeepOnion)
 * **user** - API username
 * **pass** - API password (keep that secure)
 
@@ -36,11 +36,11 @@ Basic coin settings.
 * **min_withdraw** - minimum amount of coins to withdraw
 * **min_confirmations** - minimum amount of confirmations needed to tip/withdraw coins
 * **min_tip** - minimum amount of coins to tip
-* **short_name** - short coin's name (eg. `Ǥ` or `GRS`)
-* **full_name** - full coin's name (eg. `groestlcoin`)
+* **short_name** - short coin's name (eg. `DO` or `ONION`)
+* **full_name** - full coin's name (eg. `DeepOnion`)
 
 # How to run it?
-Before running the bot, you have to be running your coin daemon with JSON-RPC API enabled. To enable, add this to your coin daemon configuration file (eg. `~/.groestlcoin/groestlcoin.conf`):
+Before running the bot, you have to be running your coin daemon with JSON-RPC API enabled. To enable, add this to your coin daemon configuration file (eg. `~/.deeponion/deeponion.conf`):
 ```ini
 server=1
 daemon=1
