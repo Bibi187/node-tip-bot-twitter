@@ -1,7 +1,7 @@
 {
   "name": "node-tip-bot-twitter",
   "version": "1.0.1",
-  "description": "node.js based tipping bot for groestlcoin",
+  "description": "node.js based tipping bot for DeepOnion",
   "main": "bin/tipbot",
   "dependencies": {
     "twitter": "~1.0.3",
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GroestlCoin/node-tip-bot-twitter/"
+    "url": "https://github.com/Bibi187/node-tip-bot-twitter/"
   },
   "author": "Groestlcoin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GroestlCoin/node-tip-bot-twitter/issues"
+    "url": "https://github.com/Bibi187/node-tip-bot-twitter/issues"
   },
-  "homepage": "https://github.com/GroestlCoin/node-tip-bot-twitter/",
+  "homepage": "https://github.com/Bibi187/node-tip-bot-twitter/",
   "keywords": [
     "groestlcoin",
     "altcoin",
