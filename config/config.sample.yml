@@ -23,9 +23,6 @@ coin:
 webadmin:
   enabled: false
   port: 8080
-  users:
-    unek: supersecretpassword
-    admintwo: password
 commands:
   help:
     pm: true
